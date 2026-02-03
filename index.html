@@ -418,7 +418,7 @@
                     Не чекайте на<br>
                     <span class="text-amber-500">критичний момент.</span>
                 </h2>
-                
+
                 <a href="https://t.me/khromenkoyegor" target="_blank" class="cinematic-text group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-lg rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_40px_rgba(251,191,36,0.8)] transform hover:-translate-y-1">
                     <span>ЗАМОВИТИ АУДИТ</span>
                     <i data-lucide="send" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
@@ -600,46 +600,61 @@
                 });
             }
 
-            // --- ADDED SCROLL SNAPPING LOGIC ---
+            // --- UPDATED SCROLL SNAPPING LOGIC (NEXT/PREV) ---
             function initScrollSnapping() {
                 let isScrolling;
-                // Target percentage values where each block is fully visible (centers of show ranges)
-                const targets = [95, 80, 65, 50, 35, 20, 5]; 
+                let lastScrollY = window.scrollY;
+                let scrollDirection = 'down';
+
+                // Normalized percentage points where blocks are centered (0.05 = 5%, 0.95 = 95%)
+                // These match the reverse logic used in sync()
+                const targetFactors = [0.05, 0.20, 0.35, 0.50, 0.65, 0.80, 0.95];
 
                 window.addEventListener('scroll', () => {
+                    // 1. Detect Direction
+                    const currentY = window.scrollY;
+                    if (currentY > lastScrollY) scrollDirection = 'down';
+                    else if (currentY < lastScrollY) scrollDirection = 'up';
+                    lastScrollY = currentY;
+
+                    // 2. Clear timeout
                     window.clearTimeout(isScrolling);
                     
+                    // 3. Set timeout to detect stop
                     isScrolling = setTimeout(() => {
                         const totalH = document.documentElement.scrollHeight - window.innerHeight;
-                        const currentY = window.scrollY;
-                        const currentVal = 100 - ((currentY / totalH) * 100);
+                        // Calculate target pixels based on current window/content size
+                        const pixelTargets = targetFactors.map(f => f * totalH);
+                        
+                        let destination = null;
 
-                        // Find closest target
-                        const closest = targets.reduce((prev, curr) => {
-                            return (Math.abs(curr - currentVal) < Math.abs(prev - currentVal) ? curr : prev);
-                        });
-
-                        // Convert back to pixels
-                        let targetY = ((100 - closest) / 100) * totalH;
-
-                        // Force top if very close to 0 (for Hero block)
-                        if (targetY < 50) targetY = 0;
-
-                        // Only snap if we are not already very close
-                        if (Math.abs(currentY - targetY) > 20) { 
-                            window.scrollTo({
-                                top: targetY,
-                                behavior: 'smooth'
-                            });
+                        if (scrollDirection === 'down') {
+                            // Find the first target that is strictly larger than current scroll (+ buffer)
+                            destination = pixelTargets.find(t => t > currentY + 10);
+                        } else {
+                            // Find the first target that is strictly smaller than current scroll (- buffer)
+                            // Reverse to find the closest one going upwards
+                            destination = [...pixelTargets].reverse().find(t => t < currentY - 10);
                         }
-                    }, 150); // Delay to detect stop
+
+                        // If a valid destination is found, snap to it
+                        if (destination !== undefined && destination !== null) {
+                            // Ensure we don't snap if we are already extremely close (avoid jitter)
+                            if (Math.abs(currentY - destination) > 5) {
+                                window.scrollTo({
+                                    top: destination,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    }, 150); // 150ms delay to consider scrolling "stopped"
                 }, { passive: true });
             }
 
             window.addEventListener('scroll', sync);
             window.addEventListener('resize', sync);
             sync();
-            initScrollSnapping(); // Trigger the snapper
+            initScrollSnapping(); 
         });
     </script>
 </body>
