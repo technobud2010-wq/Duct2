@@ -11,7 +11,6 @@
         /* --- GLOBAL & RESET --- */
         html { 
             scroll-behavior: smooth; 
-            /* CRITICAL FIX: Prevents the page from bouncing/rubber-banding on iOS */
             overscroll-behavior-y: none;
             height: 100%;
         }
@@ -23,18 +22,16 @@
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             color: white;
-            /* CRITICAL FIX: Locks the body scroll behavior */
             overscroll-behavior-y: none;
         }
 
-        /* --- BACKGROUND LAYERS (THE FIX) --- */
-        /* Detached from any flex container. Purely fixed to the screen. */
+        /* --- BACKGROUND LAYERS --- */
         .bg-layer-container {
             position: fixed;
             top: 0; left: 0; width: 100%; 
-            height: 100vh; /* Fallback */
-            height: 100svh; /* Smallest Viewport Height - ignores address bar resize */
-            z-index: 0; /* Behind content, but visible */
+            height: 100vh; 
+            height: 100svh; 
+            z-index: 0; 
             pointer-events: none;
             overflow: hidden;
         }
@@ -45,7 +42,7 @@
             width: 100%; height: 100%;
             object-fit: cover;
             will-change: opacity;
-            transition: opacity 0.1s linear; /* Smoother fade */
+            transition: opacity 0.1s linear;
         }
         
         .overlay-gradient {
@@ -54,19 +51,18 @@
             z-index: 1;
         }
 
-        /* --- NAVIGATION (STABILIZED) --- */
+        /* --- NAVIGATION --- */
         .glass-nav {
             position: fixed; 
             top: 0; left: 0; 
             width: 100%; 
             height: 60px;
-            z-index: 1000; /* Highest z-index */
+            z-index: 1000;
             display: flex; justify-content: center; align-items: center;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding: 0 5px;
-            /* HARDWARE ACCELERATION: Forces own layer, prevents clipping */
             transform: translate3d(0,0,0); 
             -webkit-transform: translate3d(0,0,0);
         }
@@ -108,7 +104,6 @@
             filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
         }
 
-        /* The Liquid Highlighter */
         #nav-highlighter {
             position: absolute;
             top: 4px; bottom: 4px; left: 0;
@@ -124,7 +119,7 @@
             opacity: 0;
         }
 
-        /* --- MOBILE NAV OPTIMIZATION --- */
+        /* --- MOBILE NAV --- */
         @media (max-width: 768px) {
             .glass-nav { height: 50px; padding: 0 2px; }
             .nav-container {
@@ -145,9 +140,8 @@
         }
 
         /* --- CONTENT BLOCKS --- */
-        /* These are now overlays ON TOP of the fixed background */
         .content-block {
-            position: fixed; /* Changed to fixed so they don't scroll away, they just fade */
+            position: fixed;
             top: 0; left: 0; width: 100%; 
             height: 100vh;
             height: 100svh;
@@ -158,7 +152,6 @@
             padding-top: 70px;
             opacity: 0; 
             visibility: hidden;
-            /* Ensure content blocks also don't jump */
             transform: translate3d(0,0,0);
         }
         .content-block > * { pointer-events: auto; }
@@ -306,7 +299,6 @@
         .photo-box.show-clean { border-color: #3b82f6; box-shadow: 0 0 25px rgba(59, 130, 246, 0.5); }
         .label-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 20; color: white; transition: 0.3s; }
 
-        /* --- BLOCK 3 MOBILE OPTIMIZATION FIXED --- */
         @media (max-width: 768px) {
             #block3.content-block { 
                 padding-top: 60px; 
@@ -316,15 +308,15 @@
             }
             .services-matrix { 
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 12px; /* Breathing room */
+                gap: 12px;
                 margin-top: 0;
                 width: 100%;
                 padding: 0 10px;
                 flex-grow: 1;
-                align-content: center; /* Center items vertically in available space */
+                align-content: center;
             }
             .photo-box { 
-                max-width: 145px; /* Significantly increased from 90px */
+                max-width: 145px;
                 width: 100%;
                 border-radius: 12px; 
                 margin: 0 auto;
@@ -342,10 +334,10 @@
         .mobile-marquee { 
             width: 100%; overflow: hidden; background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(15px); 
             border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: auto; 
-            margin-bottom: 20px; /* Safe distance from bottom */
+            margin-bottom: 20px;
             display: flex; align-items: center; 
-            height: auto; /* Let it grow */
-            min-height: 55px; /* Minimum height ensures text fits */
+            height: auto;
+            min-height: 55px;
             padding: 5px 0;
             pointer-events: auto; flex-shrink: 0; 
         }
@@ -433,8 +425,6 @@
             transition: all 0.3s ease; text-decoration: none; font-size: 0.9rem; white-space: nowrap;
         }
         .report-btn:hover { background: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.3); transform: translateY(-2px); }
-
-        /* --- BLOCK 7: Styles --- */
     </style>
 </head>
 <body class="text-white antialiased">
@@ -618,19 +608,29 @@
             { name: "Коваленко Євгеній", role: "Інженер КВП, електрик", quote: "Найкраща автоматика — та, яку ви не помічаєте. Коли все працює — це моя заслуга, якої не видно. Коли щось зупиняється — це стає моєю проблемою, яку я вирішую максимально швидко. Я не люблю хаос, тому повертаю системі розум прискіпливо і надійно", extra: "", img: "5.5.webp" }
         ];
 
-        // --- NAV SCROLL LOGIC ---
+        // --- SCROLL HELPERS ---
+        function calculateCurrentVal() {
+            const totalH = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalH <= 0) return 100;
+            return 100 - ((window.scrollY / totalH) * 100);
+        }
+
         function scrollToBlock(targetVal) {
-            // Formula: (100 - TargetVal) / 100 * (TotalHeight - WindowHeight)
             const totalH = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPos = ((100 - targetVal) / 100) * totalH;
+            
+            window.isAutoScrolling = true;
             window.scrollTo({
                 top: scrollPos,
                 behavior: 'smooth'
             });
+            setTimeout(() => { window.isAutoScrolling = false; }, 1000);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            
+            // --- CARDS ---
             const cards = document.querySelectorAll('.card-js');
             cards.forEach(card => {
                 card.addEventListener('click', (e) => {
@@ -642,6 +642,7 @@
             });
             document.addEventListener('click', () => cards.forEach(c => c.classList.remove('active')));
 
+            // --- ANIMATIONS ---
             let serviceAnimInterval = null;
             function startServiceAnimation() {
                 if (serviceAnimInterval) return;
@@ -661,6 +662,7 @@
                 }
             }
 
+            // --- PORTFOLIO ---
             const wrapper = document.getElementById('portfolioWrapper');
             portfolioItems.forEach((item, i) => {
                 const el = document.createElement('div');
@@ -668,6 +670,7 @@
                 el.innerHTML = `<div class="slide-img-col"><img src="${item.img}" class="slide-img-obj" loading="lazy"></div><div class="slide-txt-col"><p class="case-desc">${item.text}</p></div>`;
                 wrapper.appendChild(el);
             });
+            
             let currentSlide = 0;
             const slides = document.querySelectorAll('.slide-item');
             const progFill = document.getElementById('progFill');
@@ -681,6 +684,7 @@
             document.getElementById('nextBtn').addEventListener('click', () => { currentSlide = (currentSlide + 1) % slides.length; updateSlider(); });
             document.getElementById('prevBtn').addEventListener('click', () => { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlider(); });
 
+            // --- TEAM CAROUSEL ---
             const teamTrack = document.getElementById('teamTrack');
             const teamDotsCont = document.getElementById('teamDots');
             teamMembers.forEach((m, i) => {
@@ -720,6 +724,7 @@
             teamTrack.addEventListener('scroll', () => requestAnimationFrame(updateTeam));
             setTimeout(updateTeam, 500);
 
+            // --- SCROLL LOGIC & SNAP ---
             const dirtyImg = document.getElementById('dirtyImage');
             const navHighlighter = document.getElementById('nav-highlighter');
             const navItems = document.querySelectorAll('.nav-item');
@@ -738,14 +743,17 @@
                 return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
             }
 
+            let isScrollingTimer;
+            let lastScrollY = window.scrollY;
+            window.isAutoScrolling = false;
+
             function sync() {
-                const totalH = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollY = window.scrollY;
-                const val = 100 - ((scrollY / totalH) * 100);
+                const val = calculateCurrentVal();
 
                 if(dirtyImg) dirtyImg.style.opacity = Math.max(0, Math.min(1, val / 100));
 
                 let currentActiveBlockIndex = 0;
+                let insideStableZone = false;
 
                 scrollRanges.forEach((range, index) => {
                     const el = document.getElementById(range.id);
@@ -754,26 +762,28 @@
                     let opacity = 0;
                     let visible = false;
 
-                    // Determine visibility for animation
+                    // 1. Appear
                     if (range.appearStart !== undefined && val <= range.appearStart && val > range.appearEnd) {
                         opacity = mapRange(val, range.appearStart, range.appearEnd, 0, 1);
                         visible = true;
                     }
+                    // 2. Stable
                     else if (val <= range.showStart && val > range.showEnd) {
                         opacity = 1;
                         visible = true;
+                        insideStableZone = true;
                     }
+                    // 3. Fade
                     else if (val <= range.fadeStart && val > range.fadeEnd) {
                         opacity = mapRange(val, range.fadeStart, range.fadeEnd, 1, 0);
                         visible = true;
                     }
 
-                    // Apply styles
                     if (visible) {
                         el.style.visibility = 'visible';
                         el.style.opacity = opacity;
                         if (opacity > 0.5) {
-                            currentActiveBlockIndex = index; // Identify current block
+                            currentActiveBlockIndex = index;
                             el.querySelectorAll('.cinematic-text, .fly-in-anim, .glass-title-panel').forEach(c => c.classList.add('in-focus', 'landed'));
                             if (range.id === 'block3') startServiceAnimation();
                         }
@@ -785,16 +795,47 @@
                     }
                 });
 
-                // --- Update Nav Highlighter ---
+                // Update Nav
                 const activeNav = navItems[currentActiveBlockIndex];
                 if (activeNav) {
                     navItems.forEach(i => i.classList.remove('active-item'));
                     activeNav.classList.add('active-item');
-                    
                     navHighlighter.style.opacity = '1';
                     navHighlighter.style.width = `${activeNav.offsetWidth}px`;
                     navHighlighter.style.left = `${activeNav.offsetLeft}px`;
                 }
+
+                // Smart Snap
+                if (!window.isAutoScrolling) {
+                    const currentScrollY = window.scrollY;
+                    const scrollDir = currentScrollY > lastScrollY ? 'down' : 'up';
+                    lastScrollY = currentScrollY;
+
+                    clearTimeout(isScrollingTimer);
+                    isScrollingTimer = setTimeout(() => {
+                        if (!insideStableZone) {
+                            handleSnap(val, scrollDir);
+                        }
+                    }, 150);
+                }
+            }
+
+            function handleSnap(currentVal, direction) {
+                // val goes from 100 (top) to 0 (bottom)
+                const targets = scrollRanges.map(r => r.navTarget); 
+                let bestTarget = null;
+
+                if (direction === 'down') {
+                    // Moving towards 0. Find next target < currentVal
+                    const nextTargets = targets.filter(t => t < currentVal);
+                    if (nextTargets.length > 0) bestTarget = Math.max(...nextTargets);
+                } else {
+                    // Moving towards 100. Find next target > currentVal
+                    const prevTargets = targets.filter(t => t > currentVal);
+                    if (prevTargets.length > 0) bestTarget = Math.min(...prevTargets);
+                }
+
+                if (bestTarget !== null) scrollToBlock(bestTarget);
             }
 
             window.addEventListener('scroll', sync);
