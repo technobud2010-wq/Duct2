@@ -3,40 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Професійна очистка вентиляції від компанії POK Vitryaky.">
     <title>Ventilation Cleaning Scrollytelling</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    
     <style>
         /* --- GLOBAL & RESET --- */
         html { 
             scroll-behavior: smooth; 
-            /* CRITICAL FIX: Prevents the page from bouncing/rubber-banding on iOS */
             overscroll-behavior-y: none;
             height: 100%;
         }
         body {
-            height: 1200vh; /* Keeps the scroll track */
+            height: 1200vh;
             margin: 0;
             background-color: #000;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             color: white;
-            /* CRITICAL FIX: Locks the body scroll behavior */
             overscroll-behavior-y: none;
         }
 
-        /* --- BACKGROUND LAYERS (THE FIX) --- */
-        /* Detached from any flex container. Purely fixed to the screen. */
+        /* --- BACKGROUND LAYERS --- */
         .bg-layer-container {
             position: fixed;
             top: 0; left: 0; width: 100%; 
-            height: 100vh; /* Fallback */
-            height: 100svh; /* Smallest Viewport Height - ignores address bar resize */
-            z-index: 0; /* Behind content, but visible */
+            height: 100vh; 
+            height: 100svh;
+            z-index: 0;
             pointer-events: none;
             overflow: hidden;
+            /* Performance boost for fixed backgrounds */
+            transform: translateZ(0);
         }
         
         .bg-layer {
@@ -45,7 +51,7 @@
             width: 100%; height: 100%;
             object-fit: cover;
             will-change: opacity;
-            transition: opacity 0.1s linear; /* Smoother fade */
+            transition: opacity 0.1s linear;
         }
         
         .overlay-gradient {
@@ -54,19 +60,18 @@
             z-index: 1;
         }
 
-        /* --- NAVIGATION (STABILIZED) --- */
+        /* --- NAVIGATION --- */
         .glass-nav {
             position: fixed; 
             top: 0; left: 0; 
             width: 100%; 
             height: 60px;
-            z-index: 1000; /* Highest z-index */
+            z-index: 1000;
             display: flex; justify-content: center; align-items: center;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding: 0 5px;
-            /* HARDWARE ACCELERATION: Forces own layer, prevents clipping */
             transform: translate3d(0,0,0); 
             -webkit-transform: translate3d(0,0,0);
         }
@@ -108,7 +113,6 @@
             filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
         }
 
-        /* The Liquid Highlighter */
         #nav-highlighter {
             position: absolute;
             top: 4px; bottom: 4px; left: 0;
@@ -122,9 +126,10 @@
             backdrop-filter: blur(5px);
             pointer-events: none;
             opacity: 0;
+            /* Promote to own layer for smoother sliding */
+            will-change: transform, width, left;
         }
 
-        /* --- MOBILE NAV OPTIMIZATION --- */
         @media (max-width: 768px) {
             .glass-nav { height: 50px; padding: 0 2px; }
             .nav-container {
@@ -145,9 +150,8 @@
         }
 
         /* --- CONTENT BLOCKS --- */
-        /* These are now overlays ON TOP of the fixed background */
         .content-block {
-            position: fixed; /* Changed to fixed so they don't scroll away, they just fade */
+            position: fixed;
             top: 0; left: 0; width: 100%; 
             height: 100vh;
             height: 100svh;
@@ -158,8 +162,9 @@
             padding-top: 70px;
             opacity: 0; 
             visibility: hidden;
-            /* Ensure content blocks also don't jump */
             transform: translate3d(0,0,0);
+            /* Performance: GPU acceleration */
+            will-change: opacity, visibility; 
         }
         .content-block > * { pointer-events: auto; }
 
@@ -229,7 +234,7 @@
             border-color: #fbbf24; z-index: 50; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        .fly-in-anim { opacity: 0; transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .fly-in-anim { opacity: 0; transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform, opacity;}
         .from-tl { transform: translate(-100vw, -100vh) scale(0.5); }
         .from-tr { transform: translate(100vw, -100vh) scale(0.5); }
         .from-bl { transform: translate(-100vw, 100vh) scale(0.5); }
@@ -306,7 +311,6 @@
         .photo-box.show-clean { border-color: #3b82f6; box-shadow: 0 0 25px rgba(59, 130, 246, 0.5); }
         .label-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 20; color: white; transition: 0.3s; }
 
-        /* --- BLOCK 3 MOBILE OPTIMIZATION FIXED --- */
         @media (max-width: 768px) {
             #block3.content-block { 
                 padding-top: 60px; 
@@ -316,15 +320,15 @@
             }
             .services-matrix { 
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 12px; /* Breathing room */
+                gap: 12px; 
                 margin-top: 0;
                 width: 100%;
                 padding: 0 10px;
                 flex-grow: 1;
-                align-content: center; /* Center items vertically in available space */
+                align-content: center; 
             }
             .photo-box { 
-                max-width: 145px; /* Significantly increased from 90px */
+                max-width: 145px; 
                 width: 100%;
                 border-radius: 12px; 
                 margin: 0 auto;
@@ -342,10 +346,10 @@
         .mobile-marquee { 
             width: 100%; overflow: hidden; background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(15px); 
             border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: auto; 
-            margin-bottom: 20px; /* Safe distance from bottom */
+            margin-bottom: 20px;
             display: flex; align-items: center; 
-            height: auto; /* Let it grow */
-            min-height: 55px; /* Minimum height ensures text fits */
+            height: auto; 
+            min-height: 55px;
             padding: 5px 0;
             pointer-events: auto; flex-shrink: 0; 
         }
@@ -434,14 +438,13 @@
         }
         .report-btn:hover { background: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.3); transform: translateY(-2px); }
 
-        /* --- BLOCK 7: Styles --- */
     </style>
 </head>
 <body class="text-white antialiased">
 
     <div class="bg-layer-container">
-        <img src="clean.webp" onerror="this.style.display='none'; document.body.style.background='#111'" alt="Clean Ventilation" class="bg-layer z-0">
-        <img src="dirty.webp" onerror="this.style.display='none'" alt="Dirty Ventilation" id="dirtyImage" class="bg-layer z-10" style="opacity: 1;">
+        <img src="clean.webp" decoding="async" onerror="this.style.display='none'; document.body.style.background='#111'" alt="Clean Ventilation" class="bg-layer z-0">
+        <img src="dirty.webp" decoding="async" onerror="this.style.display='none'" alt="Dirty Ventilation" id="dirtyImage" class="bg-layer z-10" style="opacity: 1;">
         <div class="overlay-gradient"></div>
     </div>
 
@@ -517,12 +520,12 @@
             </div>
         </div>
         <div class="services-matrix">
-            <div class="service-item cinematic-text"><div class="service-title">Витяжні зонти</div><div class="photo-box js-anim-box"><img src="1.webp" class="photo-img img-before" alt="Брудно"><img src="2.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
-            <div class="service-item cinematic-text"><div class="service-title">Фільтра</div><div class="photo-box js-anim-box"><img src="3.webp" class="photo-img img-before" alt="Брудно"><img src="4.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
-            <div class="service-item cinematic-text"><div class="service-title">Повітропроводи</div><div class="photo-box js-anim-box"><img src="5.webp" class="photo-img img-before" alt="Брудно"><img src="6.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
-            <div class="service-item cinematic-text"><div class="service-title">Вентилятори</div><div class="photo-box js-anim-box"><img src="7.webp" class="photo-img img-before" alt="Брудно"><img src="8.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
-            <div class="service-item cinematic-text"><div class="service-title"><span class="md:hidden">Дифузори</span><span class="hidden md:block">Повітророзподільчі пристрої</span></div><div class="photo-box js-anim-box"><img src="9.webp" class="photo-img img-before" alt="Брудно"><img src="10.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
-            <div class="service-item cinematic-text"><div class="service-title">Інше</div><div class="photo-box js-anim-box"><img src="11.webp" class="photo-img img-before" alt="Брудно"><img src="12.webp" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title">Витяжні зонти</div><div class="photo-box js-anim-box"><img src="1.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="2.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title">Фільтра</div><div class="photo-box js-anim-box"><img src="3.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="4.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title">Повітропроводи</div><div class="photo-box js-anim-box"><img src="5.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="6.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title">Вентилятори</div><div class="photo-box js-anim-box"><img src="7.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="8.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title"><span class="md:hidden">Дифузори</span><span class="hidden md:block">Повітророзподільчі пристрої</span></div><div class="photo-box js-anim-box"><img src="9.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="10.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
+            <div class="service-item cinematic-text"><div class="service-title">Інше</div><div class="photo-box js-anim-box"><img src="11.webp" loading="lazy" decoding="async" class="photo-img img-before" alt="Брудно"><img src="12.webp" loading="lazy" decoding="async" class="photo-img img-after" alt="Чисто"><div class="label-badge">До</div></div></div>
         </div>
         <div class="desktop-static-bar hidden md:grid cinematic-text" style="transition-delay: 0.6s;"><div class="benefit-item"><i data-lucide="beaker" class="text-amber-400 w-5 h-5"></i><p class="benefit-text">Використовуємо ефективну хімію (виробництво Іспанія)</p></div><div class="benefit-item"><i data-lucide="moon" class="text-amber-400 w-5 h-5"></i><p class="benefit-text">Працюємо в нічний час та на будь-якій висоті.</p></div><div class="benefit-item"><i data-lucide="camera" class="text-amber-400 w-5 h-5"></i><p class="benefit-text">Фото та відео-фіксація виконаної роботи.</p></div><div class="benefit-item"><i data-lucide="file-check" class="text-amber-400 w-5 h-5"></i><p class="benefit-text">Надаємо акт утилізації та документи для ДСНС.</p></div><div class="benefit-item"><i data-lucide="shield-check" class="text-amber-400 w-5 h-5"></i><p class="benefit-text">Захищаємо ваше робоче місце від жиру.</p></div></div>
         <div class="mobile-marquee md:hidden cinematic-text">
@@ -618,9 +621,8 @@
             { name: "Коваленко Євгеній", role: "Інженер КВП, електрик", quote: "Найкраща автоматика — та, яку ви не помічаєте. Коли все працює — це моя заслуга, якої не видно. Коли щось зупиняється — це стає моєю проблемою, яку я вирішую максимально швидко. Я не люблю хаос, тому повертаю системі розум прискіпливо і надійно", extra: "", img: "5.5.webp" }
         ];
 
-        // --- NAV SCROLL LOGIC ---
+        // --- OPTIMIZED SCROLL LOGIC ---
         function scrollToBlock(targetVal) {
-            // Formula: (100 - TargetVal) / 100 * (TotalHeight - WindowHeight)
             const totalH = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPos = ((100 - targetVal) / 100) * totalH;
             window.scrollTo({
@@ -630,23 +632,39 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Initiate Lucide once
             lucide.createIcons();
-            const cards = document.querySelectorAll('.card-js');
-            cards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
-                    const isActive = card.classList.contains('active');
-                    cards.forEach(c => c.classList.remove('active'));
-                    if (!isActive) card.classList.add('active');
+            
+            // --- EVENT DELEGATION FOR CARDS (PERFORMANCE) ---
+            const riskContainer = document.getElementById('block2');
+            if (riskContainer) {
+                riskContainer.addEventListener('click', (e) => {
+                    const card = e.target.closest('.card-js');
+                    if (card) {
+                        e.stopPropagation();
+                        // Close others
+                        document.querySelectorAll('.card-js.active').forEach(c => {
+                            if (c !== card) c.classList.remove('active');
+                        });
+                        card.classList.toggle('active');
+                    } else {
+                         document.querySelectorAll('.card-js.active').forEach(c => c.classList.remove('active'));
+                    }
                 });
-            });
-            document.addEventListener('click', () => cards.forEach(c => c.classList.remove('active')));
+            }
 
+            // --- SERVICE ANIMATION ---
             let serviceAnimInterval = null;
+            let isServiceAnimRunning = false;
+            
             function startServiceAnimation() {
-                if (serviceAnimInterval) return;
+                if (isServiceAnimRunning) return;
+                isServiceAnimRunning = true;
+                
+                // Pre-query elements
                 const boxes = document.querySelectorAll('.js-anim-box');
                 const badges = document.querySelectorAll('.label-badge');
+                
                 serviceAnimInterval = setInterval(() => {
                     boxes.forEach(box => box.classList.toggle('show-clean'));
                     badges.forEach(badge => {
@@ -654,38 +672,55 @@
                     });
                 }, 2000);
             }
+            
             function stopServiceAnimation() {
+                if (!isServiceAnimRunning) return;
+                isServiceAnimRunning = false;
                 if (serviceAnimInterval) {
                     clearInterval(serviceAnimInterval);
                     serviceAnimInterval = null;
                 }
             }
 
+            // --- PORTFOLIO SLIDER ---
             const wrapper = document.getElementById('portfolioWrapper');
+            // Use DocumentFragment for batched DOM insertion
+            const fragment = document.createDocumentFragment();
             portfolioItems.forEach((item, i) => {
                 const el = document.createElement('div');
                 el.className = `slide-item ${i===0 ? 'active' : ''}`;
-                el.innerHTML = `<div class="slide-img-col"><img src="${item.img}" class="slide-img-obj" loading="lazy"></div><div class="slide-txt-col"><p class="case-desc">${item.text}</p></div>`;
-                wrapper.appendChild(el);
+                // Add loading="lazy" to slide images
+                el.innerHTML = `<div class="slide-img-col"><img src="${item.img}" class="slide-img-obj" loading="lazy" decoding="async"></div><div class="slide-txt-col"><p class="case-desc">${item.text}</p></div>`;
+                fragment.appendChild(el);
             });
+            wrapper.appendChild(fragment);
+
             let currentSlide = 0;
             const slides = document.querySelectorAll('.slide-item');
             const progFill = document.getElementById('progFill');
             const curNum = document.getElementById('currentSlideNum');
             
             function updateSlider() {
-                slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+                // Batch class updates
+                slides.forEach((s, i) => {
+                   if (i === currentSlide) s.classList.add('active');
+                   else s.classList.remove('active');
+                });
                 curNum.innerText = `0${currentSlide + 1}`;
                 progFill.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
             }
             document.getElementById('nextBtn').addEventListener('click', () => { currentSlide = (currentSlide + 1) % slides.length; updateSlider(); });
             document.getElementById('prevBtn').addEventListener('click', () => { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlider(); });
 
+            // --- TEAM CAROUSEL ---
             const teamTrack = document.getElementById('teamTrack');
             const teamDotsCont = document.getElementById('teamDots');
+            const teamFragment = document.createDocumentFragment();
+            
             teamMembers.forEach((m, i) => {
                 const d = document.createElement('div'); d.className = `card-wrapper`;
                 const extraHtml = m.extra ? `<p class="text-[10px] text-gray-400 mt-2 italic leading-tight">${m.extra}</p>` : '';
+                // Lazy load team images
                 d.innerHTML = `
                 <div class="card-inner">
                     <div class="c-text">
@@ -697,34 +732,68 @@
                             <div class="c-role">${m.role}</div>
                         </div>
                     </div>
-                    <div class="c-photo"><img src="${m.img}" alt="${m.name}"></div>
+                    <div class="c-photo"><img src="${m.img}" alt="${m.name}" loading="lazy" decoding="async"></div>
                 </div>`;
-                teamTrack.appendChild(d);
-                const dot = document.createElement('div'); dot.className = `dot ${i===0?'active':''}`;
+                teamFragment.appendChild(d);
+                
+                const dot = document.createElement('div'); 
+                dot.className = `dot ${i===0?'active':''}`;
                 teamDotsCont.appendChild(dot);
             });
+            teamTrack.appendChild(teamFragment);
             
+            // Optimization: Cache Team DOM elements
+            let teamCards = document.querySelectorAll('.card-wrapper');
+            let teamDots = document.querySelectorAll('.dot');
+            let tickingTeam = false;
+
             function updateTeam() {
-                const center = teamTrack.scrollLeft + (teamTrack.offsetWidth / 2);
-                const cards = document.querySelectorAll('.card-wrapper');
+                const trackWidth = teamTrack.offsetWidth;
+                const scrollLeft = teamTrack.scrollLeft;
+                const center = scrollLeft + (trackWidth / 2);
+                
                 let activeIdx = 0;
-                cards.forEach((card, idx) => {
-                    const dist = center - (card.offsetLeft + card.offsetWidth/2);
-                    if(Math.abs(dist) < card.offsetWidth/2) activeIdx = idx;
-                    const norm = dist / (teamTrack.offsetWidth * 0.6);
-                    card.querySelector('.card-inner').style.transform = `perspective(800px) rotateY(${norm * -25}deg) scale(${1 - Math.abs(norm)*0.15})`;
+                
+                teamCards.forEach((card, idx) => {
+                    const cardLeft = card.offsetLeft;
+                    const cardWidth = card.offsetWidth;
+                    const dist = center - (cardLeft + cardWidth/2);
+                    
+                    if(Math.abs(dist) < cardWidth/2) activeIdx = idx;
+                    
+                    const norm = dist / (trackWidth * 0.6);
+                    // Update transform strictly
+                    const inner = card.firstElementChild; // .card-inner
+                    if (inner) {
+                         inner.style.transform = `perspective(800px) rotateY(${norm * -25}deg) scale(${1 - Math.abs(norm)*0.15})`;
+                    }
                     card.style.zIndex = 100 - Math.round(Math.abs(norm)*10);
                 });
-                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i===activeIdx));
+                
+                teamDots.forEach((d, i) => {
+                    if (i === activeIdx) d.classList.add('active');
+                    else d.classList.remove('active');
+                });
+                
+                tickingTeam = false;
             }
-            teamTrack.addEventListener('scroll', () => requestAnimationFrame(updateTeam));
+            
+            teamTrack.addEventListener('scroll', () => {
+                if (!tickingTeam) {
+                    window.requestAnimationFrame(updateTeam);
+                    tickingTeam = true;
+                }
+            }, { passive: true });
+            
             setTimeout(updateTeam, 500);
 
+            // --- OPTIMIZED SCROLL ANIMATION SYSTEM ---
             const dirtyImg = document.getElementById('dirtyImage');
             const navHighlighter = document.getElementById('nav-highlighter');
-            const navItems = document.querySelectorAll('.nav-item');
+            const navItems = Array.from(document.querySelectorAll('.nav-item'));
 
-            const scrollRanges = [
+            // Pre-calculate/Cache block elements to avoid document.getElementById in scroll loop
+            const blockConfig = [
                 { id: 'block1', showStart: 100, showEnd: 90, fadeStart: 90, fadeEnd: 87, navTarget: 98 },
                 { id: 'block2', appearStart: 87, appearEnd: 85, showStart: 85, showEnd: 75, fadeStart: 75, fadeEnd: 73, navTarget: 80 },
                 { id: 'block3', appearStart: 73, appearEnd: 70, showStart: 70, showEnd: 60, fadeStart: 60, fadeEnd: 58, navTarget: 65 },
@@ -732,29 +801,49 @@
                 { id: 'block5', appearStart: 42, appearEnd: 40, showStart: 40, showEnd: 30, fadeStart: 30, fadeEnd: 27, navTarget: 35 },
                 { id: 'block6', appearStart: 27, appearEnd: 25, showStart: 25, showEnd: 15, fadeStart: 15, fadeEnd: 12, navTarget: 20 },
                 { id: 'block7', appearStart: 12, appearEnd: 10, showStart: 10, showEnd: 0,  fadeStart: -1, fadeEnd: -1, navTarget: 5 }
-            ];
+            ].map(b => ({
+                ...b,
+                el: document.getElementById(b.id),
+                animEls: document.getElementById(b.id) ? Array.from(document.getElementById(b.id).querySelectorAll('.cinematic-text, .fly-in-anim, .glass-title-panel')) : []
+            }));
+
+            // Cache Nav Geometry to prevent Layout Thrashing during scroll
+            let navMetrics = [];
+            function updateNavMetrics() {
+                navMetrics = navItems.map(item => ({
+                    left: item.offsetLeft,
+                    width: item.offsetWidth
+                }));
+            }
+            updateNavMetrics();
+            
+            let totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            window.addEventListener('resize', () => {
+                totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                updateNavMetrics();
+            }, { passive: true });
+
+            let ticking = false;
 
             function mapRange(value, inMin, inMax, outMin, outMax) {
                 return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
             }
 
             function sync() {
-                const totalH = document.documentElement.scrollHeight - window.innerHeight;
                 const scrollY = window.scrollY;
-                const val = 100 - ((scrollY / totalH) * 100);
+                const val = 100 - ((scrollY / totalHeight) * 100);
 
-                if(dirtyImg) dirtyImg.style.opacity = Math.max(0, Math.min(1, val / 100));
+                if(dirtyImg) dirtyImg.style.opacity = Math.max(0, Math.min(1, val / 100)).toFixed(3);
 
                 let currentActiveBlockIndex = 0;
 
-                scrollRanges.forEach((range, index) => {
-                    const el = document.getElementById(range.id);
-                    if(!el) return;
+                for (let i = 0; i < blockConfig.length; i++) {
+                    const range = blockConfig[i];
+                    if (!range.el) continue;
 
                     let opacity = 0;
                     let visible = false;
 
-                    // Determine visibility for animation
                     if (range.appearStart !== undefined && val <= range.appearStart && val > range.appearEnd) {
                         opacity = mapRange(val, range.appearStart, range.appearEnd, 0, 1);
                         visible = true;
@@ -768,37 +857,57 @@
                         visible = true;
                     }
 
-                    // Apply styles
                     if (visible) {
-                        el.style.visibility = 'visible';
-                        el.style.opacity = opacity;
+                        range.el.style.visibility = 'visible';
+                        range.el.style.opacity = opacity.toFixed(3); // Fix float precision for simpler paint
+                        
                         if (opacity > 0.5) {
-                            currentActiveBlockIndex = index; // Identify current block
-                            el.querySelectorAll('.cinematic-text, .fly-in-anim, .glass-title-panel').forEach(c => c.classList.add('in-focus', 'landed'));
+                            currentActiveBlockIndex = i;
+                            // Add classes only if not present (classList check is fast)
+                            range.animEls.forEach(c => {
+                                if(!c.classList.contains('in-focus')) c.classList.add('in-focus', 'landed');
+                            });
                             if (range.id === 'block3') startServiceAnimation();
                         }
                     } else {
-                        el.style.visibility = 'hidden';
-                        el.style.opacity = 0;
-                        el.querySelectorAll('.cinematic-text, .fly-in-anim, .glass-title-panel').forEach(c => c.classList.remove('in-focus', 'landed'));
-                        if (range.id === 'block3') stopServiceAnimation();
+                        // Only hide if currently visible
+                        if (range.el.style.visibility !== 'hidden') {
+                            range.el.style.visibility = 'hidden';
+                            range.el.style.opacity = 0;
+                            range.animEls.forEach(c => c.classList.remove('in-focus', 'landed'));
+                            if (range.id === 'block3') stopServiceAnimation();
+                        }
                     }
-                });
+                }
 
-                // --- Update Nav Highlighter ---
+                // Update Nav using cached metrics
                 const activeNav = navItems[currentActiveBlockIndex];
-                if (activeNav) {
+                const metrics = navMetrics[currentActiveBlockIndex];
+                
+                if (activeNav && metrics) {
                     navItems.forEach(i => i.classList.remove('active-item'));
                     activeNav.classList.add('active-item');
                     
                     navHighlighter.style.opacity = '1';
-                    navHighlighter.style.width = `${activeNav.offsetWidth}px`;
-                    navHighlighter.style.left = `${activeNav.offsetLeft}px`;
+                    // Use transform instead of left/width if possible for better performance, 
+                    // but simple width/left updates here are acceptable since we throttled the event
+                    navHighlighter.style.width = `${metrics.width}px`;
+                    navHighlighter.style.transform = `translateX(${metrics.left}px)`; 
+                    // Note: original used 'left', changed to translateX for GPU
                 }
+                
+                ticking = false;
             }
 
-            window.addEventListener('scroll', sync);
-            window.addEventListener('resize', sync);
+            // Using requestAnimationFrame to decouple scroll handler from paint cycle
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(sync);
+                    ticking = true;
+                }
+            }, { passive: true }); // Passive listener improves scroll performance
+
+            // Initial call
             sync();
         });
     </script>
