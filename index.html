@@ -11,27 +11,25 @@
         /* --- GLOBAL & RESET --- */
         html { 
             height: 100%;
-            /* Блокуємо стандартний скрол, щоб керувати ним через JS */
-            overflow: hidden; 
+            overflow: hidden; /* Block native scroll */
         }
         body {
-            /* Ми залишаємо висоту для розрахунків, але ховаємо скролбар */
             height: 100vh;
             margin: 0;
             background-color: #000;
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            overflow: hidden; /* CRITICAL: No native scrollbar */
+            overflow: hidden; 
             -webkit-tap-highlight-color: transparent;
             color: white;
             overscroll-behavior: none;
         }
 
-        /* --- BACKGROUND LAYERS (FIXED BLACK BAR) --- */
+        /* --- BACKGROUND LAYERS --- */
         .bg-layer-container {
             position: fixed;
             top: 0; left: 0; width: 100%; 
             height: 100vh; 
-            height: 100dvh; /* FIX: Dynamic height for iOS */
+            height: 100dvh; 
             z-index: 0; 
             pointer-events: none;
             overflow: hidden;
@@ -127,12 +125,12 @@
             #nav-highlighter { top: 2px; bottom: 2px; height: calc(100% - 4px); }
         }
 
-        /* --- CONTENT BLOCKS (FIXED BLACK BAR) --- */
+        /* --- CONTENT BLOCKS --- */
         .content-block {
             position: fixed;
             top: 0; left: 0; width: 100%; 
             height: 100vh;
-            height: 100dvh; /* FIX: Full dynamic height */
+            height: 100dvh;
             display: flex; flex-direction: column; 
             align-items: center; justify-content: center;
             z-index: 30; pointer-events: none; 
@@ -224,12 +222,31 @@
             .active .hidden-text { opacity: 1; max-height: 200px; margin-top: 10px; }
         }
 
-        /* --- BLOCK 3 --- */
+        /* --- BLOCK 3: SERVICES (ADAPTIVE FIX) --- */
         #block3.content-block { justify-content: space-between; padding-top: 80px; padding-bottom: 20px; }
-        .services-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1000px; flex-grow: 1; align-content: center; }
+        
+        .services-matrix { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 2vh; /* ВИПРАВЛЕННЯ: Адаптивний відступ */
+            width: 100%; max-width: 1000px; 
+            flex-grow: 1; align-content: center; 
+        }
+        
         .service-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
         .service-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: rgba(255,255,255,0.9); }
-        .photo-box { width: 100%; aspect-ratio: 1 / 1; max-width: 220px; position: relative; border-radius: 16px; overflow: hidden; background: #000; border: 2px solid rgba(255,255,255,0.1); transition: border-color 0.5s, box-shadow 0.5s; }
+        
+        .photo-box { 
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            /* ВИПРАВЛЕННЯ: Розмір залежить від висоти екрану, щоб все влізло */
+            max-width: min(220px, 19vh);
+            
+            position: relative; border-radius: 16px; overflow: hidden; 
+            background: #000; border: 2px solid rgba(255,255,255,0.1); 
+            transition: border-color 0.5s, box-shadow 0.5s; 
+        }
+        
         .photo-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1s ease-in-out; }
         .img-before { z-index: 10; opacity: 1; } .img-after { z-index: 5; opacity: 1; }
         .photo-box.show-clean .img-before { opacity: 0; }
@@ -239,9 +256,12 @@
         @media (max-width: 768px) {
             #block3.content-block { padding-top: 60px; justify-content: flex-start; }
             .services-matrix { grid-template-columns: repeat(2, 1fr); gap: 12px; flex-grow: 1; align-content: center; }
-            .photo-box { max-width: 145px; } .service-title { font-size: 0.8rem; margin-bottom: 4px; }
+            /* Мобільна версія без змін, як ви просили */
+            .photo-box { max-width: 145px; } 
+            .service-title { font-size: 0.8rem; margin-bottom: 4px; }
             #b3-title { font-size: 1.25rem !important; line-height: 1.1; margin-bottom: 0px; } #b3-subtitle { display: none; }
         }
+        
         .desktop-static-bar { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; width: 100%; max-width: 1200px; margin-top: auto; margin-bottom: 20px; transform: scale(0.95); }
         .benefit-item { display: flex; gap: 10px; align-items: flex-start; } .benefit-text { font-size: 11px; color: #ddd; }
         .mobile-marquee { width: 100%; overflow: hidden; background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(15px); border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: auto; margin-bottom: 20px; display: flex; align-items: center; height: auto; min-height: 55px; padding: 5px 0; }
