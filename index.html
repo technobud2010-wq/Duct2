@@ -265,7 +265,7 @@
         .marquee-track { display: flex; gap: 40px; padding: 0 20px; animation: marquee 14s linear infinite; width: max-content; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- BLOCK 4 --- */
+        /* --- BLOCK 4 & 5 --- */
         #block4.content-block { justify-content: center; padding: 20px; padding-top: 80px; }
         .cinematic-stage { position: relative; width: 95%; max-width: 1000px; height: 60vh; max-height: 550px; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; }
         @media (min-width: 769px) { .cinematic-stage { height: 500px; } }
@@ -285,43 +285,35 @@
         .stage-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
         .stage-btn:hover { background: #fbbf24; color: black; border-color: #fbbf24; }
         
-        /* --- BLOCK 5: TEAM (UPDATED) --- */
+        /* --- TEAM BLOCK (5) ADJUSTMENTS --- */
         #block5.content-block { justify-content: center; padding: 0; background: linear-gradient(to top, #000 0%, transparent 20%, transparent 80%, #000 100%); padding-top: 80px; }
+        
         .team-title-area { position: absolute; top: 10%; width: 100%; text-align: center; z-index: 40; padding: 0 20px; }
         .team-title-area h2 { font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        /* Mobile background fix */
-        .team-desc-bg { 
-            font-size: 0.9rem; color: #ddd; max-width: 600px; margin: 0 auto; font-weight: 300;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-            padding: 8px 16px; border-radius: 12px; display: inline-block;
-        }
+        .team-title-area p { font-size: 0.9rem; color: #aaa; max-width: 600px; margin: 0 auto; font-weight: 300; }
         
+        /* Mobile background fix */
+        @media (max-width: 768px) {
+            .team-title-area p {
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(5px);
+                padding: 10px 15px;
+                border-radius: 10px;
+                border: 1px solid rgba(255,255,255,0.1);
+                display: inline-block;
+                margin-top: 10px;
+            }
+        }
+
         .carousel-container { width: 100%; overflow-x: scroll; overflow-y: hidden; scroll-snap-type: x mandatory; padding: 0 17.5vw; display: flex; align-items: center; height: 550px; -ms-overflow-style: none; scrollbar-width: none; cursor: grab; margin-top: 60px; }
         .carousel-container::-webkit-scrollbar { display: none; }
+        
         .card-wrapper { flex: 0 0 80vw; height: 450px; scroll-snap-align: center; scroll-snap-stop: always; position: relative; perspective: 800px; margin: 0 10px; z-index: 1; }
         
-        /* Desktop Scale Fix & Nav Buttons */
-        .team-nav-btn { display: none; }
+        /* Desktop Scale Fix: Reduced height by ~10% (from 500px to 450px) and carousel height to fit dots */
         @media (min-width: 769px) { 
-            .carousel-container { 
-                padding: 0 35vw; 
-                height: 440px; /* Reduced container height */
-            } 
-            .card-wrapper { 
-                flex: 0 0 38vw; 
-                height: 440px; /* Reduced card height by ~10% (was 500) */
-            }
-            .team-nav-btn {
-                display: flex; position: absolute; top: 55%; transform: translateY(-50%);
-                width: 50px; height: 50px; border-radius: 50%;
-                background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-                color: white; align-items: center; justify-content: center;
-                cursor: pointer; z-index: 60; transition: all 0.3s;
-            }
-            .team-nav-btn:hover { background: #fbbf24; color: black; border-color: #fbbf24; }
-            .team-nav-btn.prev { left: 5%; }
-            .team-nav-btn.next { right: 5%; }
-            .team-desc-bg { background: transparent; backdrop-filter: none; padding: 0; }
+            .carousel-container { padding: 0 35vw; height: 500px; } 
+            .card-wrapper { flex: 0 0 38vw; height: 430px; } 
         }
 
         .card-inner { width: 100%; height: 100%; background: transparent; border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); display: flex; overflow: hidden; position: relative; will-change: transform; transition: transform 0.2s, filter 0.2s; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
@@ -335,6 +327,21 @@
         .dots-container { display: flex; justify-content: center; gap: 8px; position: absolute; bottom: 5%; width: 100%; z-index: 50; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s; }
         .dot.active { background: #ef4444; transform: scale(1.2); }
+
+        /* Team Nav Arrows (Desktop Only) */
+        .team-nav-btn {
+            position: absolute; top: 55%; transform: translateY(-50%); z-index: 60;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 50%; width: 50px; height: 50px;
+            display: none; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s;
+            color: white;
+        }
+        .team-nav-btn:hover { background: #fbbf24; color: #000; border-color: #fbbf24; }
+        .team-prev { left: 5vw; }
+        .team-next { right: 5vw; }
+        @media (min-width: 769px) { .team-nav-btn { display: flex; } }
 
         /* --- BLOCK 6 --- */
         #block6.content-block { justify-content: center; padding: 20px; padding-top: 80px; }
@@ -448,13 +455,13 @@
     <div id="block5" class="content-block">
         <div class="team-title-area cinematic-text">
             <h2>НАША КОМАНДА</h2>
-            <p class="team-desc-bg">Наша команда займається монтажем вентиляції, а отже ми знаємо як обслуговувати те що монтуємо</p>
+            <p>Наша команда займається монтажем вентиляції, а отже ми знаємо як обслуговувати те що монтуємо</p>
         </div>
         
-        <button class="team-nav-btn prev" id="teamPrev"><i data-lucide="chevron-left"></i></button>
-        <div class="carousel-container" id="teamTrack"></div>
-        <button class="team-nav-btn next" id="teamNext"><i data-lucide="chevron-right"></i></button>
+        <div class="team-nav-btn team-prev" id="teamPrev"><i data-lucide="chevron-left"></i></div>
+        <div class="team-nav-btn team-next" id="teamNext"><i data-lucide="chevron-right"></i></div>
         
+        <div class="carousel-container" id="teamTrack"></div>
         <div class="dots-container" id="teamDots"></div>
     </div>
 
@@ -649,7 +656,16 @@
             const teamTrack = document.getElementById('teamTrack');
             const teamDotsCont = document.getElementById('teamDots');
             
-            // Generate Items
+            // Add scroll listeners for buttons
+            document.getElementById('teamPrev').addEventListener('click', () => {
+                const cardW = document.querySelector('.card-wrapper').offsetWidth + 20; // width + margin
+                teamTrack.scrollBy({ left: -cardW, behavior: 'smooth' });
+            });
+            document.getElementById('teamNext').addEventListener('click', () => {
+                const cardW = document.querySelector('.card-wrapper').offsetWidth + 20; 
+                teamTrack.scrollBy({ left: cardW, behavior: 'smooth' });
+            });
+
             teamMembers.forEach((m, i) => {
                 const d = document.createElement('div'); d.className = `card-wrapper`;
                 const extraHtml = m.extra ? `<p class="text-[10px] text-gray-400 mt-2 italic leading-tight">${m.extra}</p>` : '';
@@ -670,45 +686,18 @@
                 const dot = document.createElement('div'); dot.className = `dot ${i===0?'active':''}`;
                 teamDotsCont.appendChild(dot);
             });
-
-            // Team Navigation Logic
-            function scrollTeam(direction) {
-                const card = document.querySelector('.card-wrapper');
-                if(!card) return;
-                const width = card.offsetWidth;
-                const gap = 20; // approximate margin gap
-                const scrollAmount = width + gap;
-                
-                if(direction === 'next') {
-                    teamTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                } else {
-                    teamTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                }
-            }
-
-            const teamNext = document.getElementById('teamNext');
-            const teamPrev = document.getElementById('teamPrev');
-            if(teamNext) teamNext.addEventListener('click', () => scrollTeam('next'));
-            if(teamPrev) teamPrev.addEventListener('click', () => scrollTeam('prev'));
-
-            // 3D Effect on Scroll
             function updateTeam() {
                 const center = teamTrack.scrollLeft + (teamTrack.offsetWidth / 2);
                 const cards = document.querySelectorAll('.card-wrapper');
                 let activeIdx = 0;
-                let minDiff = 99999;
-
                 cards.forEach((card, idx) => {
-                    const cardCenter = card.offsetLeft + card.offsetWidth/2;
-                    const dist = center - cardCenter;
-                    
-                    if(Math.abs(dist) < minDiff) {
-                        minDiff = Math.abs(dist);
-                        activeIdx = idx;
-                    }
-
+                    const dist = center - (card.offsetLeft + card.offsetWidth/2);
+                    if(Math.abs(dist) < card.offsetWidth/2) activeIdx = idx;
                     const norm = dist / (teamTrack.offsetWidth * 0.6);
-                    card.querySelector('.card-inner').style.transform = `perspective(800px) rotateY(${norm * -25}deg) scale(${1 - Math.abs(norm)*0.15})`;
+                    // Safe guard for calculation
+                    const rot = Math.max(-25, Math.min(25, norm * -25));
+                    const scale = Math.max(0.8, 1 - Math.abs(norm)*0.15);
+                    card.querySelector('.card-inner').style.transform = `perspective(800px) rotateY(${rot}deg) scale(${scale})`;
                     card.style.zIndex = 100 - Math.round(Math.abs(norm)*10);
                 });
                 document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i===activeIdx));
