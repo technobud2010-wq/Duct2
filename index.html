@@ -310,7 +310,6 @@
         
         .card-wrapper { flex: 0 0 80vw; height: 450px; scroll-snap-align: center; scroll-snap-stop: always; position: relative; perspective: 800px; margin: 0 10px; z-index: 1; }
         
-        /* Desktop Scale Fix: Reduced height by ~10% (from 500px to 450px) and carousel height to fit dots */
         @media (min-width: 769px) { 
             .carousel-container { padding: 0 35vw; height: 500px; } 
             .card-wrapper { flex: 0 0 38vw; height: 430px; } 
@@ -324,23 +323,36 @@
         .c-name { font-size: 0.85rem; font-weight: 800; color: #fff; text-transform: uppercase; margin-top: auto; }
         .c-role { font-size: 0.6rem; color: #ef4444; font-weight: 700; text-transform: uppercase; }
         .quote-bg { position: absolute; top: 5px; left: 5px; font-size: 3rem; font-family: serif; color: rgba(255,255,255,0.05); line-height: 0; pointer-events: none; }
-        .dots-container { display: flex; justify-content: center; gap: 8px; position: absolute; bottom: 5%; width: 100%; z-index: 50; }
+        
+        /* --- TEAM CONTROLS BOTTOM WRAPPER --- */
+        .team-controls-wrapper {
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 60;
+            pointer-events: none;
+        }
+        .team-controls-wrapper > * { pointer-events: auto; }
+
+        .dots-container { display: flex; gap: 8px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s; }
         .dot.active { background: #ef4444; transform: scale(1.2); }
 
-        /* Team Nav Arrows (Desktop Only) */
         .team-nav-btn {
-            position: absolute; top: 55%; transform: translateY(-50%); z-index: 60;
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(5px);
-            border-radius: 50%; width: 50px; height: 50px;
+            border-radius: 50%; width: 40px; height: 40px;
             display: none; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.3s;
             color: white;
         }
         .team-nav-btn:hover { background: #fbbf24; color: #000; border-color: #fbbf24; }
-        .team-prev { left: 5vw; }
-        .team-next { right: 5vw; }
+        
         @media (min-width: 769px) { .team-nav-btn { display: flex; } }
 
         /* --- BLOCK 6 --- */
@@ -458,11 +470,13 @@
             <p>Наша команда займається монтажем вентиляції, а отже ми знаємо як обслуговувати те що монтуємо</p>
         </div>
         
-        <div class="team-nav-btn team-prev" id="teamPrev"><i data-lucide="chevron-left"></i></div>
-        <div class="team-nav-btn team-next" id="teamNext"><i data-lucide="chevron-right"></i></div>
-        
         <div class="carousel-container" id="teamTrack"></div>
-        <div class="dots-container" id="teamDots"></div>
+
+        <div class="team-controls-wrapper">
+            <div class="team-nav-btn" id="teamPrev"><i data-lucide="chevron-left"></i></div>
+            <div class="dots-container" id="teamDots"></div>
+            <div class="team-nav-btn" id="teamNext"><i data-lucide="chevron-right"></i></div>
+        </div>
     </div>
 
     <div id="block6" class="content-block">
